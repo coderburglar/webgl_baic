@@ -8,8 +8,6 @@ class BaseClass{
         this.checkCurrentCanvas(canvas)
         this.gl = new CoderGLClass(this.canvas)
     }
-
-
     private awakeCanvas(canvasID:string = 'glCanvas'){
         let canvas;
         try{
@@ -19,7 +17,6 @@ class BaseClass{
             canvas = document.createElement('canvas')
             canvas.setAttribute('id','glCanvas')
         }
-
         return canvas
     }
     private  checkCurrentCanvas(canvas:HTMLCanvasElement){
@@ -30,7 +27,6 @@ class BaseClass{
     clear(){
       return   this.gl.clearColor()
     }
-
     setSize(w,h){
         return  this.gl.setSize(w,h)
     }
