@@ -37,7 +37,7 @@ class BaseClass{
 
     initShader(vshaderText:string,fshaderText:string){
         const vshader =shaderUtil.createShader(this.gl.gl,vshaderText,this.gl.gl.VERTEX_SHADER)
-        const fshader =shaderUtil.createShader(this.gl.gl,vshaderText,this.gl.gl.FRAGMENT_SHADER)
+        const fshader =shaderUtil.createShader(this.gl.gl,fshaderText,this.gl.gl.FRAGMENT_SHADER)
         console.log(vshader,fshader)
         const shaderProg = ShaderUtil.createProgram(this.gl.gl,vshader!,fshader!,true);
        if(!shaderProg)return

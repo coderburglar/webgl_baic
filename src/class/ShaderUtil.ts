@@ -7,6 +7,7 @@ class ShaderUtil {
      * @return {WebGLShader} -返回shader
      * **/
     static  createShader(gl:WebGL2RenderingContext,src,type:any){
+        console.log(gl,src,type)
         //创建一片区域
         const shader = gl.createShader(type)
         //把数据扔在区域里面
@@ -14,7 +15,6 @@ class ShaderUtil {
         //编译shader
         gl.compileShader(shader)
 
-        console.log("shader",shader)
         if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS)){
             console.error("编译失败")
             gl.deleteShader(shader)
