@@ -34,27 +34,30 @@ class BaseClass{
     setSize(w,h){
         return  this.gl.setSize(w,h)
     }
+    draw(){
+        this.clear()
+        this.gl.gl.drawArrays(this.gl.gl.POINTS,0,1)
 
+    }
     initShader(vshaderText:string,fshaderText:string){
         const vshader =shaderUtil.createShader(this.gl.gl,vshaderText,this.gl.gl.VERTEX_SHADER)
         const fshader =shaderUtil.createShader(this.gl.gl,fshaderText,this.gl.gl.FRAGMENT_SHADER)
-        console.log(vshader,fshader)
         const shaderProg = ShaderUtil.createProgram(this.gl.gl,vshader!,fshader!,true);
-       if(!shaderProg)return
+        if(!shaderProg)return
         this.gl.gl.useProgram(shaderProg)
-        const aPositionLoc = this.gl.gl.getAttribLocation(shaderProg,"a_position");
-        const uPointSizeLoc = this.gl.gl.getUniformLocation(shaderProg,"uPointSize");
-        this.gl.gl.deleteProgram(shaderProg);
-
         //测试一下
         const aryVertx = new Float32Array([0,0,0]);
         const bufVers = this.gl.gl.createBuffer()
+        let a_position =this.gl.gl.getAttribLocation(shaderProg,'a_position');
 
         this.gl.gl.bindBuffer(this.gl.gl.ARRAY_BUFFER,bufVers)
         this.gl.gl.bufferData(this.gl.gl.ARRAY_BUFFER,aryVertx,this.gl.gl.STATIC_DRAW);
-        // this.gl.gl.bindBuffer(this.gl.gl.ARRAY_BUFFER,null);
-
+        //赋值的操作
+        // this.gl.gl.vertexAttrib4fv(a_position,aryVertx);
+        this.gl.gl.vertexAttribPointer(a_position, 3, this.gl.gl.FLOAT, false, 0, 0);
+        this.gl.gl.enableVertexAttribArray(a_position);
     }
+
 }
 
 

@@ -28,7 +28,6 @@ class ShaderUtil {
         gl.attachShader(prog,vShader);
         gl.attachShader(prog,fshader);
         gl.linkProgram(prog)
-
         if(doValidote){
             gl.validateProgram(prog)
             if(!gl.getProgramParameter(prog,gl.VALIDATE_STATUS)){

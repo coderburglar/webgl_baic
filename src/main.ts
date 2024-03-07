@@ -10,6 +10,7 @@ async function  main(){
     const vertexShader = await fetchDataText(fetchData(import.meta.env.BASE_URL + 'glsl/basic/01/shader.vert.glsl'));
     const fragShader =await fetchDataText(fetchData(import.meta.env.BASE_URL + 'glsl/basic/01/shader.frag.glsl'));
     glInstance.initShader(vertexShader,fragShader);
+    glInstance.draw()
 }
 
 window.addEventListener('load',async ()=>{
