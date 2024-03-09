@@ -7,13 +7,13 @@ class BaseClass {
     canvas!: HTMLCanvasElement
     gl: CoderGLClass
     shaderUtls: ShaderUtil
-    renderLoop: RenderLoop
+    u_point_size:WebGLUniformLocation
+    // renderLoop: RenderLoop
     constructor(canvasID: string = 'glCanvas') {
         const canvas = this.awakeCanvas() as HTMLCanvasElement
         this.checkCurrentCanvas(canvas)
         this.gl = new CoderGLClass(this.canvas)
         this.shaderUtls = new ShaderUtil()
-        this.renderLoop = new RenderLoop(this.draw, 60).start()
     }
     private awakeCanvas(canvasID: string = 'glCanvas') {
         let canvas;
@@ -42,7 +42,7 @@ class BaseClass {
         this.gl.gl.drawArrays(this.gl.gl.POINTS, 0, 2)
 
     }
-    initShader(vshaderText: string, fshaderText: string) {
+    initShader(vshaderText: string, fshaderText: string,size:number) {
         const vshader = shaderUtil.createShader(this.gl.gl, vshaderText, this.gl.gl.VERTEX_SHADER)
         const fshader = shaderUtil.createShader(this.gl.gl, fshaderText, this.gl.gl.FRAGMENT_SHADER)
         const shaderProg = ShaderUtil.createProgram(this.gl.gl, vshader!, fshader!, true);
@@ -52,18 +52,27 @@ class BaseClass {
         const aryVertx = new Float32Array([0, 0, 0, 0.5, .5, 0]);
         const bufVers = this.gl.gl.createBuffer()
         let a_position = this.gl.gl.getAttribLocation(shaderProg, 'a_position');
-        let u_point_size = this.gl.gl.getUniformLocation(shaderProg, 'uPointSize');
+        let iResultion = this.gl.gl.getUniformLocation(shaderProg,'iResoultion')
+        this.u_point_size = this.gl.gl.getUniformLocation(shaderProg, 'uPointSize');
         //创建buffer区域
         this.gl.gl.bindBuffer(this.gl.gl.ARRAY_BUFFER, bufVers)
         //绑定数据
         this.gl.gl.bufferData(this.gl.gl.ARRAY_BUFFER, aryVertx, this.gl.gl.STATIC_DRAW);
         //赋值的操作
         this.gl.gl.useProgram(shaderProg)
-        this.gl.gl.uniform1f(u_point_size, 10.0);
+        this.setUniform1f(this.u_point_size, size);
+        this.gl.gl.uniform2f(iResultion,500,500);
         this.gl.gl.enableVertexAttribArray(a_position);
+
         this.gl.gl.vertexAttribPointer(a_position, 3, this.gl.gl.FLOAT, false, 0, 0);
+
+
     }
 
+
+    setUniform1f(name:WebGLUniformLocation,size:number){
+        this.gl.gl.uniform1f(name,size);
+    }
 }
 
 
