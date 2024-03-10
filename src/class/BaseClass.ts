@@ -39,7 +39,7 @@ class BaseClass {
     }
     draw() {
         this.clear()
-        this.gl.gl.drawArrays(this.gl.gl.POINTS, 0, 2)
+        this.gl.gl.drawArrays(this.gl.gl.TRIANGLES, 0, 3)
 
     }
     initShader(vshaderText: string, fshaderText: string,size:number) {
@@ -48,23 +48,26 @@ class BaseClass {
         const shaderProg = ShaderUtil.createProgram(this.gl.gl, vshader!, fshader!, true);
         if (!shaderProg) return
         this.gl.gl.useProgram(null)
-        //测试一下
-        const aryVertx = new Float32Array([0, 0, 0, 0.5, .5, 0]);
+        //定义一组数据,但是我们要区分这只是顶点需要的位置数据,而不是顶点.
+        const aryVertx = new Float32Array([0,0,0,.5,0,0,-.5,0,0]);
+        //创建VBO顶点缓冲对象,与opengl不一样不需要显示传递一个id
         const bufVers = this.gl.gl.createBuffer()
+        //返回的其实是一个index
         let a_position = this.gl.gl.getAttribLocation(shaderProg, 'a_position');
         let iResultion = this.gl.gl.getUniformLocation(shaderProg,'iResoultion')
         this.u_point_size = this.gl.gl.getUniformLocation(shaderProg, 'uPointSize');
-        //创建buffer区域
+        //给ARRAY_BUFFER缓冲区绑定buffer
         this.gl.gl.bindBuffer(this.gl.gl.ARRAY_BUFFER, bufVers)
-        //绑定数据
+        //把之前定义的顶点数据备份到VBO上 ,意味着其实aryVetrtx可以删除. 并且这个地方和opengl不一样不需要显示传递size,解释一下为什么需要gl.STATIC_DRAW,就是这种修改的我们把他放在显卡能够告诉写入的内存部分.
         this.gl.gl.bufferData(this.gl.gl.ARRAY_BUFFER, aryVertx, this.gl.gl.STATIC_DRAW);
         //赋值的操作
         this.gl.gl.useProgram(shaderProg)
         this.setUniform1f(this.u_point_size, size);
         this.gl.gl.uniform2f(iResultion,500,500);
+        //启用顶点属性数组
         this.gl.gl.enableVertexAttribArray(a_position);
-
-        this.gl.gl.vertexAttribPointer(a_position, 3, this.gl.gl.FLOAT, false, 0, 0);
+        //位置内存分布,
+        this.gl.gl.vertexAttribPointer(a_position, 2, this.gl.gl.FLOAT, false, 2 * Float32Array.BYTES_PER_ELEMENT, 8);
 
 
     }
