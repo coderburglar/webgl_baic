@@ -43,8 +43,9 @@ class ShaderUtil {
                 return null
             }
         }
-        gl.detachShader(prog, vShader)
-        gl.detachShader(prog, fshader)
+        // cherno 在 opengl 课程提到不建议删除源码,因为会无法调试,并且这个地方很小.
+        // gl.detachShader(prog, vShader)
+        // gl.detachShader(prog, fshader)
         gl.deleteShader(vShader)
         gl.deleteShader(fshader)
         return prog

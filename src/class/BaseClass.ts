@@ -43,6 +43,7 @@ class BaseClass {
 
     }
     initShader(vshaderText: string, fshaderText: string,size:number) {
+        //这个地方注意一下  在webgl中要特意写  opengl有默认的固定渲染管线.
         const vshader = shaderUtil.createShader(this.gl.gl, vshaderText, this.gl.gl.VERTEX_SHADER)
         const fshader = shaderUtil.createShader(this.gl.gl, fshaderText, this.gl.gl.FRAGMENT_SHADER)
         const shaderProg = ShaderUtil.createProgram(this.gl.gl, vshader!, fshader!, true);
