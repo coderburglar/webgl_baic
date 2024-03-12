@@ -8,10 +8,13 @@ async function main() {
     glInstance.clear()
 
     //读取shader
-    const vertexShader = await fetchDataText(fetchData(import.meta.env.BASE_URL + 'glsl/basic/01/shader.vert.glsl'));
-    const fragShader = await fetchDataText(fetchData(import.meta.env.BASE_URL + 'glsl/basic/01/shader.frag.glsl'));
+    // const vertexShader = await fetchDataText(fetchData(import.meta.env.BASE_URL + 'glsl/basic/01/shader.vert.glsl'));
+    // const fragShader = await fetchDataText(fetchData(import.meta.env.BASE_URL + 'glsl/basic/01/shader.frag.glsl'));
+
+    const {VertexShader,FragmentShader} =await  glInstance.shaderUtls.parseShader(import.meta.env.BASE_URL + 'glsl/basic/01/Basic.shader');
+    console.log(VertexShader,FragmentShader)
     let size = 10;
-    glInstance.initShader(vertexShader, fragShader,size);
+    glInstance.initShader(VertexShader, FragmentShader,size);
     // glInstance.draw()
     // glInstance.renderLoop.start()
     function  onRender(){

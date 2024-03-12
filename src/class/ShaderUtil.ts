@@ -1,3 +1,11 @@
+enum ShaderType {
+    NONE = 0,VERTEX=1,FRAGMENT =2
+}
+interface ShaderProgramSource{
+    VertexShader:string,
+    FragmentShader:string
+}
+
 class ShaderUtil {
     /**
      * @description 创建shader 绑定shader 编译shader
@@ -49,8 +57,37 @@ class ShaderUtil {
         gl.deleteShader(vShader)
         gl.deleteShader(fshader)
         return prog
-
     }
+
+    async  parseShader(filePath) {
+        const ss = await fetch(filePath)
+            .then(res => res.text())
+            .then(res => {
+                const lines = res.split('\n');
+                let shaderSource = {
+                    [ShaderType.VERTEX]: '',
+                    [ShaderType.FRAGMENT]: ''
+                };
+                let type = ShaderType.NONE;
+                while (lines.length) {
+                    const line = lines.shift();
+                    if (line.includes("#shader")) {
+                        if (line.includes("vertex"))
+                            type = ShaderType.VERTEX;
+                        else if (line.includes("fragment"))
+                            type = ShaderType.FRAGMENT;
+                    } else {
+                        shaderSource[type] += line + '\n';
+                    }
+                }
+                return {
+                    VertexShader: shaderSource[ShaderType.VERTEX],
+                    FragmentShader: shaderSource[ShaderType.FRAGMENT]
+                };
+            });
+        return ss;
+    }
+
 }
 
 
