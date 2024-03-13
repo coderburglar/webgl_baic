@@ -64,7 +64,6 @@ class BaseClass {
         //创建VBO顶点缓冲对象,与opengl不一样不需要显示传递一个id
         const bufVers = this.gl.gl.createBuffer()
         //返回的其实是一个index
-        let a_position = this.gl.gl.getAttribLocation(shaderProg, 'a_position');
         let iResultion = this.gl.gl.getUniformLocation(shaderProg,'iResoultion')
         this.u_point_size = this.gl.gl.getUniformLocation(shaderProg, 'uPointSize');
         //给ARRAY_BUFFER缓冲区绑定buffer
@@ -76,11 +75,13 @@ class BaseClass {
         this.setUniform1f(this.u_point_size, size);
         this.gl.gl.uniform2f(iResultion,500,500);
         //启用顶点属性数组
-        this.gl.gl.enableVertexAttribArray(a_position);
+        this.gl.gl.enableVertexAttribArray(0);
         //位置内存分布,
-        this.gl.gl.vertexAttribPointer(a_position, 2, this.gl.gl.FLOAT, false, 2 * Float32Array.BYTES_PER_ELEMENT, 0);
-
-
+        this.gl.gl.vertexAttribPointer(0, 2, this.gl.gl.FLOAT, false, 2 * Float32Array.BYTES_PER_ELEMENT, 0);
+        //处理VAO
+        let vao;
+        this.gl.glCall(vao = this.gl.gl.createVertexArray());
+        this.gl.glCall(this.gl.gl.bindVertexArray(vao))
         //处理EBO
         const ebo =  this.gl.gl.createBuffer();
         const indices = [
