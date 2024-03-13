@@ -20,7 +20,7 @@ async function main() {
     function  onRender(){
         glInstance.clear()
         glInstance.draw()
-        size++
+        // size++
         glInstance.setUniform1f(glInstance.u_point_size,size)
     }
     const renderLoop = new RenderLoop(onRender.bind(glInstance),60).start()

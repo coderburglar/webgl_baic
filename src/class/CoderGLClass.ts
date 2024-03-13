@@ -1,3 +1,5 @@
+import assert from "../utils/assert";
+
 class CoderGLClass {
     gl: WebGL2RenderingContext;
     constructor(canvas: HTMLCanvasElement) {
@@ -30,6 +32,24 @@ class CoderGLClass {
         this.gl.viewport(0, 0, w, h);
     }
 
+    glClearError() {
+        while (this.gl.getError() !== this.gl.NO_ERROR);
+    }
+
+    glLogCall(){
+        let error;
+        while(error = this.gl.getError()){
+            console.log(`[WebGL Error] ${error}`)
+            return error
+        }
+        return  true
+    }
+    glCall(func:any){
+        this.glClearError.bind(this)
+        func
+        let  res;
+        assert( res =  this.glLogCall.bind(this)(),res.toString())
+    }
 }
 
 export default CoderGLClass
